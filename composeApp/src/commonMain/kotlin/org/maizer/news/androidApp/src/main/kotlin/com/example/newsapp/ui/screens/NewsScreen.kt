@@ -10,9 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.ui.viewmodel.ApiClient
-import com.example.newsapp.ui.viewmodel.Article
 import com.example.newsapp.ui.viewmodel.NewsViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import shared.models.Article
 
 @Composable
 fun NewsScreen(viewModel: NewsViewModel) {

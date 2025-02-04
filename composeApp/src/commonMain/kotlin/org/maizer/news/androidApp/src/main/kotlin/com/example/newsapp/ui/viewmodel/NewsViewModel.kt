@@ -15,6 +15,8 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import mu.KotlinLogging
+import shared.models.Article
+import shared.models.NewsResponse
 
 private val logger = KotlinLogging.logger {}
 
@@ -56,49 +58,5 @@ data class NewsState(
 
 
 
-class ApiClient {
-
-    private val client = HttpClient(CIO) {
-        install(ContentNegotiation) { // Use ContentNegotiation plugin
-            json(Json {
-                ignoreUnknownKeys = true
-                prettyPrint = true
-            })
-        }
-    }
-
-    private val apiKey = "be46ef0efea24cd584947a3ecc84a6c6" // Use your actual API key here
-    private val baseUrl = "https://newsapi.org/v2/top-headlines?country=us&apiKey=$apiKey"
-
-    suspend fun fetchNews(): NewsResponse {
-        val response: HttpResponse = client.get(baseUrl)
-        return response.body() // Deserialize into NewsResponse
-    }
-}
 
 
-
-@Serializable
-data class NewsResponse(
-    val status: String,
-    val totalResults: Int,
-    val articles: List<Article>
-)
-
-@Serializable
-data class Article(
-    val source: Source,
-    val author: String?,
-    val title: String,
-    val description: String?,
-    val url: String,
-    val urlToImage: String?,
-    val publishedAt: String,
-    val content: String?
-)
-
-@Serializable
-data class Source(
-    val id: String?,
-    val name: String
-)
