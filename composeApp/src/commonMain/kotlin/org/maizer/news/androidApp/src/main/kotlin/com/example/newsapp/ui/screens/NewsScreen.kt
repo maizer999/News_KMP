@@ -1,6 +1,7 @@
 package com.example.newsapp.ui.screens
 
 
+import ApiClient
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.newsapp.ui.viewmodel.ApiClient
 import com.example.newsapp.ui.viewmodel.NewsViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import shared.models.Article

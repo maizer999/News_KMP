@@ -1,5 +1,6 @@
 package com.example.newsapp.ui.viewmodel
 
+import ApiClient
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.ktor.client.HttpClient
