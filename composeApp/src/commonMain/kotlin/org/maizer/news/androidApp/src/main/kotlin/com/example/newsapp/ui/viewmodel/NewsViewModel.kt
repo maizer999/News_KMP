@@ -70,7 +70,6 @@ class ApiClient {
     private val apiKey = "be46ef0efea24cd584947a3ecc84a6c6" // Use your actual API key here
     private val baseUrl = "https://newsapi.org/v2/top-headlines?country=us&apiKey=$apiKey"
 
-    // Correct way to fetch and deserialize the response
     suspend fun fetchNews(): NewsResponse {
         val response: HttpResponse = client.get(baseUrl)
         return response.body() // Deserialize into NewsResponse

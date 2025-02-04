@@ -1,21 +1,20 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget // Add this import
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    kotlin("plugin.serialization") version "1.8.0" // Ensure the Kotlin Serialization plugin is applied
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.20" // Use the id and latest version
 }
 
 kotlin {
     androidTarget {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11) // Set JVM target to version 11
+            jvmTarget.set(JvmTarget.JVM_11)
         }
     }
 
-    // iOS Target Configuration
     listOf(
         iosX64(),
         iosArm64(),
@@ -30,48 +29,35 @@ kotlin {
     val ktor_version = "2.3.0"
 
     sourceSets {
-        // Android Main Source Set
         androidMain.dependencies {
-            implementation(compose.preview) // Compose preview for Android
+            implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation("io.ktor:ktor-client-android:$ktor_version") // Android specific Ktor
         }
 
-        // Common Main Source Set
-        commonMain.dependencies {
-            // Compose dependencies
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+        commonMain {
+            dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material)
+                implementation(compose.ui)
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
+                implementation(libs.androidx.lifecycle.viewmodel)
+                implementation(libs.androidx.lifecycle.runtime.compose)
 
-            // AndroidX Lifecycle dependencies for Compose
-            implementation(libs.androidx.lifecycle.viewmodel)
-            implementation(libs.androidx.lifecycle.runtime.compose)
+                implementation("io.ktor:ktor-client-core:$ktor_version")
+                implementation("io.ktor:ktor-client-cio:$ktor_version")
+                implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
 
-            // Ktor dependencies for networking
-            implementation("io.ktor:ktor-client-core:$ktor_version")
-            implementation("io.ktor:ktor-client-cio:$ktor_version") // Ktor CIO engine for client
-            implementation("io.ktor:ktor-client-content-negotiation:$ktor_version") // Content Negotiation
-            implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version") // JSON serialization plugin
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0") // Or latest
 
-            // Kotlinx Serialization dependencies
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0") // Latest version
-
-            // Kotlin Logging for debugging
-            implementation("io.github.microutils:kotlin-logging:2.1.23")
+                implementation("io.github.microutils:kotlin-logging:2.1.23")
+            }
         }
 
-        // Android Source Set for platform-specific code
-        androidMain.dependencies {
-            // Android specific dependencies
-            implementation("io.ktor:ktor-client-android:$ktor_version")
-        }
-
-        // iOS Source Set for platform-specific code
         iosMain.dependencies {
-            // iOS specific dependencies for Ktor client
             implementation("io.ktor:ktor-client-ios:$ktor_version")
         }
     }
@@ -91,13 +77,13 @@ android {
 
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}" // Exclude unnecessary resources
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = true // Enable minification for release builds
+            isMinifyEnabled = true
         }
     }
 
@@ -108,5 +94,5 @@ android {
 }
 
 dependencies {
-    debugImplementation(compose.uiTooling) // Add compose UI tooling for debugging
+    debugImplementation(compose.uiTooling)
 }
